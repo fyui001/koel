@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Builder $schema, DatabaseManager $db, Validator $validator): void
     {
+        if ($this->app->environment() === 'production') {
+            \URL::forceScheme('https');
+        }
+
         // Fix utf8mb4-related error starting from Laravel 5.4
         $schema->defaultStringLength(191);
 
