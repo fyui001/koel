@@ -34,6 +34,7 @@ services:
       - default
       - docker_default
     volumes:
+      - music:/music
       - code:/code
       - ./docker/nginx/conf.d/local.d/default.conf:/etc/nginx/conf.d/default.conf
     labels:

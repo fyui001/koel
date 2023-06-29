@@ -42,9 +42,10 @@ RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ && \
     zip && \
     rm -rf /tmp/*
 
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+
 ENV FFMPEG_PATH=/usr/bin/ffmpeg \
     MEDIA_PATH=/music \
-    STREAMING_METHOD=x-sendfile \
     LANG=ja_JP.UTF-8 \
     LANGUAGE=ja_JP:ja \
     LC_ALL=ja_JP.UTF-8
