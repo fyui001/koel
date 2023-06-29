@@ -24,7 +24,7 @@ cache_clear:
 	@docker compose exec app php artisan config:clear
 
 permission:
-	@docker compose exec app chmod -R 777 /code/storage bootstrap/cache
+	@docker compose exec app chmod -R 777 /code/storage bootstrap/cache /music
 
 migrate:
 	@docker compose exec app php artisan migrate
@@ -46,6 +46,9 @@ down:
 
 stop:
 	@mutagen-compose stop
+
+sync:
+	@docker compose exec app php artisan koel:sync
 
 setup:
 	@make composer_install
