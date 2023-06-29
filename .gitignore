@@ -86,3 +86,5 @@ log.json
 .php_cs.cache
 
 demo-credits.json
+
+docker-compose.yml

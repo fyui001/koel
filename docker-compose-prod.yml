@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+  web:
+    image: nginx:latest
+    depends_on:
+      - app
+    networks:
+      - default
+      - docker_default
+    volumes:
+      - ./public:/code/public
+      - ./docker/nginx/conf.d/local.d/default.conf:/etc/nginx/conf.d/default.conf
+    environment:
+      - TZ=${TZ}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.koel.rule=Host(`koel.localhost`)'
+      - "traefik.http.routers.koel.tls.certresolver=myresolver"
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    tty: true
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - .:/code
+      - php-vendor:/code/vendor
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - /disk/koel:/music
+      - search_index:/code/storage/search-indexes
+    depends_on:
+      - js
+    labels:
+      - 'traefik.enable=false'
+  js:
+    build:
+      context: .
+      dockerfile: ./docker/js/Dockerfile
+    tty: true
+    volumes:
+      - .:/code:cached
+      - node-modules:/code/node_modules
+    labels:
+      - 'traefik.enable=false'
+networks:
+  docker_default:
+    name: docker_default
+
+volumes:
+  php-vendor:
+  node-modules:
+  search_index:
+    driver: local
+
